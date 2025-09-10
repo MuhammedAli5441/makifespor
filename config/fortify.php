@@ -143,17 +143,32 @@ return [
     |
     */
 
+    // 'features' => [
+    //     Features::registration(),
+    //     Features::resetPasswords(),
+    //     // Features::emailVerification(),
+    //     Features::updateProfileInformation(),
+    //     Features::updatePasswords(),
+    //     Features::twoFactorAuthentication([
+    //         'confirm' => true,
+    //         'confirmPassword' => true,
+    //         // 'window' => 0,
+    //     ]),
+    // ],
     'features' => [
-        Features::registration(),
-        Features::resetPasswords(),
-        // Features::emailVerification(),
-        Features::updateProfileInformation(),
-        Features::updatePasswords(),
-        Features::twoFactorAuthentication([
-            'confirm' => true,
-            'confirmPassword' => true,
-            // 'window' => 0,
-        ]),
-    ],
+    // Kayıt olmayı devre dışı bıraktık
+    // Features::registration(),
+
+    Features::resetPasswords(),
+    // Features::emailVerification(),
+    Features::updateProfileInformation(),
+    Features::updatePasswords(),
+    Features::twoFactorAuthentication([
+        'confirm' => true,
+        'confirmPassword' => true,
+        // 'window' => 0,
+    ]),
+],
+
 
 ];

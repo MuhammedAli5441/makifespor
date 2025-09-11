@@ -23,4 +23,6 @@ Route::middleware(['guest'])->group(function () {
 
 Route::post('/kayit-gonder', [KayitController::class, 'gonder'])->name('kayit.gonder');
 
- Route::resource('takimlar',TakimController::class);
+ Route::middleware('auth')->group(function () {
+    Route::resource('takimlar', TakimController::class);
+});

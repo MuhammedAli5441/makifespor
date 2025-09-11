@@ -6,15 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Makif espor - Anasayfa</title>
+    <title>Makif espor - AdminAnasayfa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('Template/css/styles.css') }}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+<style>
+    /* Sıralamaya göre satır renk çizgileri */
+    tbody tr.border-left-green td:first-child,
+    tbody tr.border-left-orange td:first-child {
+        position: relative;
+        padding-left: 12px; /* Yazı ile çizgi arası boşluk */
+    }
+
+    tbody tr.border-left-green td:first-child::before,
+    tbody tr.border-left-orange td:first-child::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 4px;    /* Çizgi yukardan biraz içeride başlar */
+        bottom: 4px; /* Çizgi alttan biraz içeride biter */
+        width: 6px;  /* Çizgi kalınlığı */
+        border-radius: 4px 0 0 4px;
+    }
+
+    tbody tr.border-left-green td:first-child::before {
+        background-color: #28a745; /* Yeşil */
+    }
+
+    tbody tr.border-left-orange td:first-child::before {
+        background-color: #fd7e14; /* Turuncu */
+    }
+</style>
+
 </head>
 <body class="sb-nav-fixed">
-
-
 
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -29,23 +55,16 @@
                         </a>
                     </div>
                 </div>
-
-                <!-- En Alta Sabit Giriş Butonu -->
-                <div class="p-3">
-                    <a href="{{ route('admin.anasayfa') }}" class="btn btn-primary w-100">
-                        <i class="fas fa-sign-in-alt"></i> Giriş Yap
-                    </a>
-                </div>
             </nav>
         </div>
 
         <div id="layoutSidenav_content">
             <main>
-                   @if(session('success'))
-        <div class="alert alert-success m-3">
-            {{ session('success') }}
-        </div>
-    @endif
+                @if(session('success'))
+                    <div class="alert alert-success m-3">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Anasayfa</h1>
 
@@ -98,59 +117,44 @@
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
                             Takımlar
+                            <a class="btn btn-success float-end" href="{{route('takimlar.create')}}">Takım Ekle</a>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Sıralama</th>
+                                        <th>#</th>
                                         <th>Takım Adı</th>
                                         <th>Puan</th>
                                         <th>Maç Geçmişi</th>
+                                        <th>İşlemler</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>A takımı</td>
-                                        <td>15</td>
-                                        <td>4G 3B 0K</td>
-                                    </tr>
+                                    @foreach ($takimlar as $takim)
+                                        @php
+                                            $sira = $loop->iteration;
+                                            $rowClass = '';
+
+                                            if ($sira <= 4) {
+                                                $rowClass = 'border-left-green';
+                                            } elseif ($sira >= 5 && $sira <= 12) {
+                                                $rowClass = 'border-left-orange';
+                                            }
+                                        @endphp
+
+                                        <tr class="{{ $rowClass }}">
+                                            <td>{{ $sira }}</td>
+                                            <td>{{ $takim->takimadi }}</td>
+                                            <td>{{ $takim->puan }}</td>
+                                            <td>{{ $takim->gecmis }}</td>
+                                            <td>
+                                                <a class="btn btn-primary" href="{{ route('takimlar.edit', $takim->id) }}">Düzenle</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kayıt Ol Bölümü -->
-                <div class="container-fluid px-4 mt-5">
-                    <div class="card mb-4">
-                        <div class="card-header bg-success text-white">
-                            <i class="fas fa-user-plus me-1"></i> Kayıt Ol
-                        </div>
-                        <div class="card-body">
-                            <form method="POST" action="{{ route('kayit.gonder') }}">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Ad Soyad</label>
-                                    <input type="text" class="form-control" id="name" name="name" required />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">E-Posta</label>
-                                    <input type="email" class="form-control" id="email" name="_replyto" required />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="team" class="form-label">Takım Adı</label>
-                                    <input type="text" class="form-control" id="team" name="team" required />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="message" class="form-label">Katılacak Üyeler Ve Sınıfları</label>
-                                    <textarea placeholder="Örn: Ad(Sınıf)" class="form-control" id="message" name="message" rows="3" required></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-success w-100">
-                                    <i class="fas fa-paper-plane"></i> Gönder
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -164,3 +168,4 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
+

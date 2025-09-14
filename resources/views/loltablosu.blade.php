@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Makif espor - Admin Anasayfa</title>
+    <title>Makif espor - LoL</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="{{ asset('Template/css/styles.css') }}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -71,7 +71,7 @@
                 <div class="alert alert-success mt-3">{{ session('success') }}</div>
                 @endif
 
-                <h1 class="mt-4 mb-3 text-center text-md-start">Anasayfa</h1>
+                <h1 class="mt-4 mb-3 text-center text-md-start">LoL</h1>
 
                 <!-- Devam Eden Maçlar -->
                 <div class="card mb-4">

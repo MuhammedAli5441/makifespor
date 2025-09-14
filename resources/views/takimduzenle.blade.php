@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Makif espor - Takım Oluştur</title>
+    <title>Makif espor - Takım Düzenle</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('Template/css/styles.css') }}" rel="stylesheet" />
@@ -14,12 +14,9 @@
 </head>
 <body class="sb-nav-fixed">
 
-
-
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark d-flex flex-column" id="sidenavAccordion">
-                <!-- Menü Kısmı -->
                 <div class="sb-sidenav-menu flex-grow-1">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Core</div>
@@ -34,39 +31,90 @@
 
         <div id="layoutSidenav_content">
             <main>
-                   @if(session('success'))
-        <div class="alert alert-success m-3">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if(session('error'))
-    <div class="alert alert-danger m-3">
-        {{ session('error') }}
-    </div>
-@endif
-                <div class="container-fluid px-4">
-                <h1 class="mt-4">Anasayfa</h1>
-                <div class="card">
-                    <div class="card-body">
-                        <form action="{{route('takimlar.update',$takim->id)}}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <h5 class="card-title">Takım Düzenle</h5>
-                        <label for="">Takım Adı Giriniz:</label>
-                        <input type="text" class="form-control mb-3" name="takimadi" value="{{$takim->takimadi}}">
-                        <label for="">Puan Giriniz:</label>
-                        <input type="number" class="form-control mb-3" name="puan" value="{{$takim->puan}}">
-                        <label for="">Takım Geçmişi Giriniz:</label>
-                        <input type="text" class="form-control mb-3" name="gecmis" value="{{$takim->gecmis}}">
-                        <button class="btn btn-primary">Takımı Düzenle</button>
-                        </form>
-
+                @if(session('success'))
+                    <div class="alert alert-success m-3">
+                        {{ session('success') }}
                     </div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger m-3">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Anasayfa</h1>
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="{{ route('takimlar.update', $takim->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <h5 class="card-title">Takım Düzenle</h5>
+                                <a href="{{route('admin.anasayfa')}}" class="btn btn-success float-end">Geri Dön</a>
+                                <br>
+                                {{-- Takım Adı --}}
+                                <label for="">Takım Adı Giriniz:</label>
+                                <input type="text"
+                                       class="form-control mb-1 @error('takimadi') is-invalid @enderror"
+                                       name="takimadi"
+                                       value="{{ old('takimadi', $takim->takimadi) }}">
+                                @error('takimadi')
+                                    <div class="text-danger mb-3">{{ $message }}</div>
+                                @enderror
+
+                                {{-- Puan --}}
+                                <label for="">Puan Giriniz:</label>
+                                <input type="number"
+                                       class="form-control mb-1 @error('puan') is-invalid @enderror"
+                                       name="puan"
+                                       value="{{ old('puan', $takim->puan) }}">
+                                @error('puan')
+                                    <div class="text-danger mb-3">{{ $message }}</div>
+                                @enderror
+
+                                {{-- Geçmiş --}}
+                                <label for="">Takım Geçmişi Giriniz:</label>
+                                <input type="text"
+                                       class="form-control mb-1 @error('gecmis') is-invalid @enderror"
+                                       name="gecmis"
+                                       value="{{ old('gecmis', $takim->gecmis) }}">
+                                @error('gecmis')
+                                    <div class="text-danger mb-3">{{ $message }}</div>
+                                @enderror
+
+                                {{-- Oyunlar --}}
+                                <label class="d-block mb-2">Katılınacak Oyunlar:</label>
+
+                                @php
+                                    $seciliOyunlar = $takim->oyunlar ?? [];
+                                @endphp
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="oyunlar[]" value="CS2" id="game_cs2"
+                                           {{ in_array('CS2', $seciliOyunlar) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="game_cs2">CS2</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="oyunlar[]" value="League of Legends" id="game_lol"
+                                           {{ in_array('League of Legends', $seciliOyunlar) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="game_lol">League of Legends</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="oyunlar[]" value="Valorant" id="game_valorant"
+                                           {{ in_array('Valorant', $seciliOyunlar) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="game_valorant">Valorant</label>
+                                </div>
+                                @error('oyunlar')
+                                    <div class="text-danger mt-2">{{ $message }}</div>
+                                @enderror
+
+                                <button class="btn btn-primary mt-3">Takımı Düzenle</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-
-                </div>
-
 
             </main>
         </div>

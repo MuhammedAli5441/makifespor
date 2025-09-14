@@ -40,20 +40,26 @@ class TakimController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(TakimOlusturRequest $request)
-    {
-          if (!auth()->check()) {
+  public function store(TakimOlusturRequest $request)
+{
+    if (!auth()->check()) {
         return redirect()->route('anasayfa');
-        }
-
-        $data = [
-           'takimadi' => $request->takimadi,
-           'puan' => $request->puan,
-           'gecmis' => $request->gecmis,
-        ];
-        Makifespors::create($data);
-        return redirect()->route("takimlar.index")->with("success","Takım Başarıyla Eklendi");
     }
+
+    $data = [
+        'takimadi' => $request->takimadi,
+        'puan' => $request->puan,
+        'gecmis' => $request->gecmis,
+        'oyunlar' => $request->oyunlar,
+    ];
+
+    Makifespors::create($data);
+
+    return redirect()
+        ->route("takimlar.index")
+        ->with("success", "Takım Başarıyla Eklendi");
+}
+
 
     /**
      * Display the specified resource.
@@ -78,15 +84,24 @@ class TakimController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(TakimGuncelleRequest $request, string $id)
-    {
-             if (!auth()->check()) {
+public function update(TakimGuncelleRequest $request, string $id)
+{
+    if (!auth()->check()) {
         return redirect()->route('anasayfa');
-        }
-         $takim = Makifespors::find($id) ?? abort(404,'Takım Bulunamadı');
-         Makifespors::where('id',$id)->update($request->except('_method','_token'));
-         return redirect()->route("takimlar.index")->with("success","Takım Başarıyla Güncellendi");
     }
+
+    $takim = Makifespors::find($id) ?? abort(404, 'Takım Bulunamadı');
+
+    $data = $request->except('_method', '_token');
+    $data['oyunlar'] = $request->oyunlar; // ✅ seçilen oyunları ekle
+
+    $takim->update($data);
+
+    return redirect()
+        ->route("takimlar.index")
+        ->with("success", "Takım Başarıyla Güncellendi");
+}
+
 
     /**
      * Remove the specified resource from storage.

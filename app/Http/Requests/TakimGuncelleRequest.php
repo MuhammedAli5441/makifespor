@@ -20,18 +20,25 @@ class TakimGuncelleRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-         return [
-             'takimadi' => 'required',
-             'puan' => 'required',
-             'gecmis' => 'required',
-        ];
-    }
-        public function messages(): array {
-        return [
-           'takimadi.required' => 'Lütfen Takım Adı Giriniz',
-           'puan.required' => 'Lütfen Puan Giriniz',
-           'gecmis.required' => 'Lütfen Takım Geçmişi Giriniz',
-        ];
-    }
+{
+    return [
+        'takimadi' => 'required',
+        'puan' => 'required|integer',
+        'gecmis' => 'required',
+        'oyunlar' => 'required|array|min:1',
+        'oyunlar.*' => 'string|max:50',
+    ];
+}
+
+public function messages(): array
+{
+    return [
+        'takimadi.required' => 'Lütfen Takım Adı Giriniz',
+        'puan.required' => 'Lütfen Puan Giriniz',
+        'gecmis.required' => 'Lütfen Takım Geçmişi Giriniz',
+        'oyunlar.required' => 'Lütfen oyun seçiniz',
+        'oyunlar.min' => 'Lütfen en az bir oyun seçiniz',
+    ];
+}
+
 }

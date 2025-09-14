@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -12,6 +13,7 @@
     <link href="{{ asset('Template/css/styles.css') }}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
+
 <body class="sb-nav-fixed">
 
 
@@ -41,11 +43,17 @@
 
         <div id="layoutSidenav_content">
             <main>
-                   @if(session('success'))
-        <div class="alert alert-success m-3">
-            {{ session('success') }}
-        </div>
-    @endif
+                @if(session('success'))
+                <div class="alert alert-success m-3">
+                    {{ session('success') }}
+                </div>
+                @endif
+
+                @if(session('error'))
+                <div class="alert alert-danger mt-3">
+                    {{ session('error') }}
+                </div>
+                @endif
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Anasayfa</h1>
 
@@ -135,18 +143,44 @@
                                     <label for="name" class="form-label">Ad Soyad</label>
                                     <input type="text" class="form-control" id="name" name="name" required />
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="email" class="form-label">E-Posta</label>
                                     <input type="email" class="form-control" id="email" name="_replyto" required />
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="team" class="form-label">Takım Adı</label>
                                     <input type="text" class="form-control" id="team" name="team" required />
                                 </div>
+
                                 <div class="mb-3">
-                                    <label for="message" class="form-label">Katılacak Üyeler Ve Sınıfları</label>
-                                    <textarea placeholder="Örn: Ad(Sınıf)" class="form-control" id="message" name="message" rows="3" required></textarea>
+                                    <label class="form-label d-block">Oyunlar</label>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="game_cs2" name="game[]"
+                                            value="CS2">
+                                        <label class="form-check-label" for="game_cs2">CS2</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="game_lol" name="game[]"
+                                            value="League of Legends">
+                                        <label class="form-check-label" for="game_lol">League of Legends</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="game_valorant" name="game[]"
+                                            value="Valorant">
+                                        <label class="form-check-label" for="game_valorant">Valorant</label>
+                                    </div>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Katılacak Üyeler ve Sınıfları</label>
+                                    <textarea placeholder="Örn: Ad(Sınıf)" class="form-control" id="message"
+                                        name="message" rows="3" required></textarea>
+                                </div>
+
                                 <button type="submit" class="btn btn-success w-100">
                                     <i class="fas fa-paper-plane"></i> Gönder
                                 </button>
@@ -154,13 +188,16 @@
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
+    </main>
+    </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
+    </script>
     <script src="{{ asset('Template/js/scripts.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>

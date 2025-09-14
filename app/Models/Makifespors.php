@@ -9,5 +9,7 @@ class Makifespors extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['takimadi', 'puan', 'gecmis'];
+   protected $fillable = ['takimadi','puan','gecmis','oyunlar'];
+   protected $casts = ['oyunlar' => 'array'];
+
 }

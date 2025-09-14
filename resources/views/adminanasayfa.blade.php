@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -11,35 +12,43 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('Template/css/styles.css') }}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-<style>
-    /* Sıralamaya göre satır renk çizgileri */
-    tbody tr.border-left-green td:first-child,
-    tbody tr.border-left-orange td:first-child {
-        position: relative;
-        padding-left: 12px; /* Yazı ile çizgi arası boşluk */
-    }
+    <style>
+        /* Sıralamaya göre satır renk çizgileri */
+        tbody tr.border-left-green td:first-child,
+        tbody tr.border-left-orange td:first-child {
+            position: relative;
+            padding-left: 12px;
+            /* Yazı ile çizgi arası boşluk */
+        }
 
-    tbody tr.border-left-green td:first-child::before,
-    tbody tr.border-left-orange td:first-child::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 4px;    /* Çizgi yukardan biraz içeride başlar */
-        bottom: 4px; /* Çizgi alttan biraz içeride biter */
-        width: 6px;  /* Çizgi kalınlığı */
-        border-radius: 4px 0 0 4px;
-    }
+        tbody tr.border-left-green td:first-child::before,
+        tbody tr.border-left-orange td:first-child::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 4px;
+            /* Çizgi yukardan biraz içeride başlar */
+            bottom: 4px;
+            /* Çizgi alttan biraz içeride biter */
+            width: 6px;
+            /* Çizgi kalınlığı */
+            border-radius: 4px 0 0 4px;
+        }
 
-    tbody tr.border-left-green td:first-child::before {
-        background-color: #28a745; /* Yeşil */
-    }
+        tbody tr.border-left-green td:first-child::before {
+            background-color: #28a745;
+            /* Yeşil */
+        }
 
-    tbody tr.border-left-orange td:first-child::before {
-        background-color: #fd7e14; /* Turuncu */
-    }
-</style>
+        tbody tr.border-left-orange td:first-child::before {
+            background-color: #fd7e14;
+            /* Turuncu */
+        }
+
+    </style>
 
 </head>
+
 <body class="sb-nav-fixed">
 
     <div id="layoutSidenav">
@@ -53,6 +62,15 @@
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-house"></i></div>
                             Anasayfa
                         </a>
+                        <a class="nav-link" href="{{route('cs2')}}">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-crosshairs"></i></div> CS2
+                        </a>
+                        <a class="nav-link" href="{{route('Valorant')}}">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-bullseye"></i></div> Valorant
+                        </a>
+                        <a class="nav-link" href="{{route('LoL')}}">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-dragon"></i></div> LoL
+                        </a>
                     </div>
                 </div>
             </nav>
@@ -61,9 +79,9 @@
         <div id="layoutSidenav_content">
             <main>
                 @if(session('success'))
-                    <div class="alert alert-success m-3">
-                        {{ session('success') }}
-                    </div>
+                <div class="alert alert-success m-3">
+                    {{ session('success') }}
+                </div>
                 @endif
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Anasayfa</h1>
@@ -132,27 +150,23 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($takimlar as $takim)
-                                        @php
-                                            $sira = $loop->iteration;
-                                            $rowClass = '';
+                                    @php
+                                    $sira = $loop->iteration;
+                                    $rowClass = '';
 
-                                            if ($sira <= 4) {
-                                                $rowClass = 'border-left-green';
-                                            } elseif ($sira >= 5 && $sira <= 12) {
-                                                $rowClass = 'border-left-orange';
-                                            }
-                                        @endphp
-
-                                        <tr class="{{ $rowClass }}">
+                                    if ($sira <= 4) { $rowClass='border-left-green' ; } elseif ($sira>= 5 && $sira <=
+                                            12) { $rowClass='border-left-orange' ; } @endphp <tr
+                                            class="{{ $rowClass }}">
                                             <td>{{ $sira }}</td>
                                             <td>{{ $takim->takimadi }}</td>
                                             <td>{{ $takim->puan }}</td>
                                             <td>{{ $takim->gecmis }}</td>
                                             <td>
-                                                <a class="btn btn-primary" href="{{ route('takimlar.edit', $takim->id) }}">Düzenle</a>
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('takimlar.edit', $takim->id) }}">Düzenle</a>
                                             </td>
-                                        </tr>
-                                    @endforeach
+                                            </tr>
+                                            @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -162,10 +176,12 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
+    </script>
     <script src="{{ asset('Template/js/scripts.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
 </body>
-</html>
 
+</html>

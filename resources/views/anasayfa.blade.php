@@ -29,6 +29,12 @@
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-house"></i></div>
                             Anasayfa
                         </a>
+                          <a class="nav-link" href="{{route('cs2')}}">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-crosshairs"></i></div>
+                            CS2
+                        </a>
+                          <a class="nav-link" href="{{route('Valorant')}}"> <div class="sb-nav-link-icon"><i class="fa-solid fa-crosshairs"></i></div> Valorant </a>
+                          <a class="nav-link" href="{{route('LoL')}}"> <div class="sb-nav-link-icon"><i class="fa-solid fa-crosshairs"></i></div> LoL </a>
                     </div>
                 </div>
 
@@ -100,36 +106,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Takımlar Tablosu -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Takımlar
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Sıralama</th>
-                                        <th>Takım Adı</th>
-                                        <th>Puan</th>
-                                        <th>Maç Geçmişi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>A takımı</td>
-                                        <td>15</td>
-                                        <td>4G 3B 0K</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Kayıt Ol Bölümü -->
                 <div class="container-fluid px-4 mt-5">
                     <div class="card mb-4">

@@ -73,7 +73,7 @@
                                 <select name="game" id="" class="form-control">
                                     <option value="valorant">Valorant</option>
                                     <option value="lol">LoL</option>
-                                    <option value="cs2">CS2</option>
+                                    <option value="cs">CS2</option>
                                 </select>
                                 <label>Takım 1</label>
                                 <input type="text" name="team_home" class="form-control">

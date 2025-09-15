@@ -7,23 +7,22 @@ use App\Http\Requests\TakimOlusturRequest;
 use App\Models\GameMatch;
 use App\Models\Makifespors;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class TakimController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-   public function index()
+ public function index()
     {
     if (!auth()->check()) {
         return redirect()->route('anasayfa');
     }
 
-
     $takimlar = Makifespors::orderBy('puan', 'desc')->get();
 
-
-    $matches = GameMatch::where('match_date', '>', now())
+    $matches = GameMatch::where('match_date', '>', Carbon::now())
         ->orderBy('match_date', 'asc')
         ->get();
 

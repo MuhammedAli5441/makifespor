@@ -5,17 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\GameMatch;
 use App\Models\Makifespors;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class LoLController extends Controller
 {
-   public function yonlendir()
+ public function yonlendir()
 {
-
     $takimlar = Makifespors::whereJsonContains('oyunlar', 'League of Legends')->get();
 
-
     $matches = GameMatch::where('game', 'lol')
-        ->where('match_date', '>', now())
+        ->where('match_date', '>', Carbon::now())
         ->orderBy('match_date', 'asc')
         ->get();
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TakimGuncelleRequest;
 use App\Http\Requests\TakimOlusturRequest;
+use App\Models\GameMatch;
 use App\Models\Makifespors;
 use Illuminate\Http\Request;
 
@@ -12,16 +13,21 @@ class TakimController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+   public function index()
     {
-
     if (!auth()->check()) {
         return redirect()->route('anasayfa');
     }
 
-    // Normal devam
-    $takimlar = Makifespors::orderBy('puan','desc')->get();
-    return view('adminanasayfa',compact('takimlar'));
+
+    $takimlar = Makifespors::orderBy('puan', 'desc')->get();
+
+
+    $matches = GameMatch::where('match_date', '>', now())
+        ->orderBy('match_date', 'asc')
+        ->get();
+
+    return view('adminanasayfa', compact('takimlar', 'matches'));
     }
 
     /**

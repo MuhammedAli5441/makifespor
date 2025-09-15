@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Makif espor - Valorant</title>
+    <title>Espor - Valorant</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="{{ asset('Template/css/styles.css') }}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -89,28 +89,27 @@
                 <div class="card mb-4">
                     <div class="card-header bg-info text-white">
                         <i class="fas fa-clock me-1"></i>
-                        Sıradaki Maçlar
+                        Sıradaki Valorant Maçları
                     </div>
                     <div class="card-body overflow-auto">
                         <div class="d-flex flex-row flex-wrap gap-3">
+                            @forelse($matches as $match)
                             <div class="card flex-fill" style="min-width: 250px;">
                                 <div class="card-body">
-                                    <h5 class="card-title">A Takımı vs C Takımı</h5>
-                                    <p class="card-text">Tarih: 12/09/2025 - Saat: 18:00</p>
+                                    <h5 class="card-title">
+                                        {{ $match->team_home }} vs {{ $match->team_away }}
+                                    </h5>
+                                    <p class="card-text">
+                                        Tarih: {{ $match->match_date->format('d/m/Y') }} -
+                                        Saat: {{ $match->match_date->format('H:i') }}
+                                    </p>
                                 </div>
                             </div>
-                            <div class="card flex-fill" style="min-width: 250px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">D Takımı vs E Takımı</h5>
-                                    <p class="card-text">Tarih: 13/09/2025 - Saat: 20:00</p>
-                                </div>
+                            @empty
+                            <div class="w-100 text-center text-muted">
+                                Yaklaşan maç yok.
                             </div>
-                            <div class="card flex-fill" style="min-width: 250px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">F Takımı vs G Takımı</h5>
-                                    <p class="card-text">Tarih: 14/09/2025 - Saat: 21:30</p>
-                                </div>
-                            </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Makif espor - Anasayfa</title>
+    <title>Espor - Anasayfa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('Template/css/styles.css') }}" rel="stylesheet" />
@@ -16,6 +16,7 @@
                 padding: 1rem;
             }
         }
+
     </style>
 </head>
 
@@ -54,11 +55,11 @@
         <div id="layoutSidenav_content">
             <main class="container-fluid px-3 px-md-4">
                 @if(session('success'))
-                    <div class="alert alert-success mt-3">{{ session('success') }}</div>
+                <div class="alert alert-success mt-3">{{ session('success') }}</div>
                 @endif
 
                 @if(session('error'))
-                    <div class="alert alert-danger mt-3">{{ session('error') }}</div>
+                <div class="alert alert-danger mt-3">{{ session('error') }}</div>
                 @endif
 
                 <h1 class="mt-4 text-center text-md-start">Anasayfa</h1>
@@ -69,35 +70,37 @@
                         <i class="fas fa-play-circle me-1"></i> Devam Eden Maç
                     </div>
                     <div class="card-body">
-                        <p class="mb-0"><strong>A Takımı</strong> vs <strong>B Takımı</strong> - 12. Dakika (Skor: 1-0)</p>
+                        <p class="mb-0"><strong>A Takımı</strong> vs <strong>B Takımı</strong> - 12. Dakika (Skor: 1-0)
+                        </p>
                     </div>
                 </div>
 
                 <!-- Sıradaki Maçlar -->
                 <div class="card mb-4">
                     <div class="card-header bg-info text-white">
-                        <i class="fas fa-clock me-1"></i> Sıradaki Maçlar
+                        <i class="fas fa-clock me-1"></i>
+                        Tüm Gelecek Maçlar
                     </div>
-                    <div class="card-body">
+                    <div class="card-body overflow-auto">
                         <div class="d-flex flex-row flex-wrap gap-3">
+                            @forelse($matches as $match)
                             <div class="card flex-fill" style="min-width: 250px;">
                                 <div class="card-body">
-                                    <h5 class="card-title">A Takımı vs C Takımı</h5>
-                                    <p class="card-text">Tarih: 12/09/2025 - Saat: 18:00</p>
+                                    <h5 class="card-title">
+                                        {{ strtoupper($match->game) }} — {{ $match->team_home }} vs
+                                        {{ $match->team_away }}
+                                    </h5>
+                                    <p class="card-text">
+                                        Tarih: {{ $match->match_date->format('d/m/Y') }} -
+                                        Saat: {{ $match->match_date->format('H:i') }}
+                                    </p>
                                 </div>
                             </div>
-                            <div class="card flex-fill" style="min-width: 250px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">D Takımı vs E Takımı</h5>
-                                    <p class="card-text">Tarih: 13/09/2025 - Saat: 20:00</p>
-                                </div>
+                            @empty
+                            <div class="w-100 text-center text-muted">
+                                Yaklaşan maç yok.
                             </div>
-                            <div class="card flex-fill" style="min-width: 250px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">F Takımı vs G Takımı</h5>
-                                    <p class="card-text">Tarih: 14/09/2025 - Saat: 21:30</p>
-                                </div>
-                            </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>
@@ -126,22 +129,26 @@
                             <div class="mb-3">
                                 <label class="form-label d-block">Oyunlar</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="game_cs2" name="game[]" value="CS2">
+                                    <input class="form-check-input" type="checkbox" id="game_cs2" name="game[]"
+                                        value="CS2">
                                     <label class="form-check-label" for="game_cs2">CS2</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="game_lol" name="game[]" value="League of Legends">
+                                    <input class="form-check-input" type="checkbox" id="game_lol" name="game[]"
+                                        value="League of Legends">
                                     <label class="form-check-label" for="game_lol">League of Legends</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="game_valorant" name="game[]" value="Valorant">
+                                    <input class="form-check-input" type="checkbox" id="game_valorant" name="game[]"
+                                        value="Valorant">
                                     <label class="form-check-label" for="game_valorant">Valorant</label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="message" class="form-label">Katılacak Üyeler ve Sınıfları</label>
-                                <textarea placeholder="Örn: Ad(Sınıf)" class="form-control" id="message" name="message" rows="3" required></textarea>
+                                <textarea placeholder="Örn: Ad(Sınıf)" class="form-control" id="message" name="message"
+                                    rows="3" required></textarea>
                             </div>
 
                             <button type="submit" class="btn btn-success w-100">

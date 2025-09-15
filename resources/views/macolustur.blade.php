@@ -48,72 +48,40 @@
                     {{ session('success') }}
                 </div>
                 @endif
-                @if(session('error'))
-                <div class="alert alert-danger m-3">
-                    {{ session('error') }}
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
                 @endif
 
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Anasayfa</h1>
+                    <h1 class="mt-4">Maçlar</h1>
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="card-title mb-0">Takım Oluştur</h5>
+                                <h5 class="card-title mb-0">Maç Oluştur</h5>
                                 <a href="{{ route('admin.anasayfa') }}" class="btn btn-danger">Geri Dön</a>
                             </div>
 
-                            <form action="{{route('takimlar.store')}}" method="POST">
+                            <form action="{{route('maclar.store')}}" method="POST">
                                 @csrf
-                                {{-- Takım Adı --}}
-                                <label for="">Takım Adı Giriniz:</label>
-                                <input type="text" class="form-control mb-1 @error('takimadi') is-invalid @enderror"
-                                    name="takimadi" value="{{ old('takimadi') }}">
-                                @error('takimadi')
-                                <div class="text-danger mb-3">{{ $message }}</div>
-                                @enderror
-
-                                {{-- Puan --}}
-                                <label for="">Puan Giriniz:</label>
-                                <input type="number" class="form-control mb-1 @error('puan') is-invalid @enderror"
-                                    name="puan" value="{{ old('puan') }}">
-                                @error('puan')
-                                <div class="text-danger mb-3">{{ $message }}</div>
-                                @enderror
-
-                                {{-- Geçmiş --}}
-                                <label for="">Takım Geçmişi Giriniz:</label>
-                                <input type="text" class="form-control mb-1 @error('gecmis') is-invalid @enderror"
-                                    name="gecmis" value="{{ old('gecmis') }}">
-                                @error('gecmis')
-                                <div class="text-danger mb-3">{{ $message }}</div>
-                                @enderror
-
-                                {{-- Oyunlar --}}
-                                <label class="d-block mb-2">Katılınacak Oyunlar:</label>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="oyunlar[]" value="CS2"
-                                        id="game_cs2">
-                                    <label class="form-check-label" for="game_cs2">CS2</label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="oyunlar[]"
-                                        value="League of Legends" id="game_lol">
-                                    <label class="form-check-label" for="game_lol">League of Legends</label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="oyunlar[]" value="Valorant"
-                                        id="game_valorant">
-                                    <label class="form-check-label" for="game_valorant">Valorant</label>
-                                </div>
-                                @error('oyunlar')
-                                <div class="text-danger mt-2">{{ $message }}</div>
-                                @enderror
-
-                                <button class="btn btn-success mt-3">Takım Ekle</button>
+                                <label>Oyun</label>
+                                <select name="game" id="" class="form-control">
+                                    <option value="valorant">Valorant</option>
+                                    <option value="lol">LoL</option>
+                                    <option value="cs2">CS2</option>
+                                </select>
+                                <label>Takım 1</label>
+                                <input type="text" name="team_home" class="form-control">
+                                <label>Takım 2</label>
+                                <input type="text" name="team_away" class="form-control">
+                                <label>Maç tarihi</label>
+                                <input name="match_date" type="datetime-local" class="form-control">
+                                <button class="btn btn-success mt-3">Maç Oluştur</button>
                             </form>
 
                         </div>

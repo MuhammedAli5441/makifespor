@@ -4,23 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\GameMatch;
 use App\Models\Makifespors;
+use App\Models\TeamGameStat;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 class Cs2Controller extends Controller
 {
 public function yonlendir()
 {
-    // Takımlar ve oyun istatistikleri birlikte çekiliyor
-    $takimlar = Makifespors::with(['gameStats' => function($q) {
-        $q->where('game', 'cs2');
-    }])->get();
+    // CS2 takımlarının istatistiklerini çek
+    $cs2Teams = TeamGameStat::with('team')
+        ->where('game', 'cs2')
+        ->orderBy('puan', 'desc')
+        ->get();
 
-    // Yaklaşan CS2 maçlarını çek
+    // Gelecek CS2 maçlarını çek
     $matches = GameMatch::where('game', 'cs2')
         ->where('match_date', '>', Carbon::now())
         ->orderBy('match_date', 'asc')
         ->get();
 
-    return view('cstablosu', compact('takimlar', 'matches'));
+    return view('cstablosu', compact('cs2Teams', 'matches'));
 }
 }

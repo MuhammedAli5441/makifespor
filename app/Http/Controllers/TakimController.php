@@ -6,6 +6,7 @@ use App\Http\Requests\TakimGuncelleRequest;
 use App\Http\Requests\TakimOlusturRequest;
 use App\Models\GameMatch;
 use App\Models\Makifespors;
+use App\Models\TeamGameStat;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -14,20 +15,35 @@ class TakimController extends Controller
     /**
      * Display a listing of the resource.
      */
- public function index()
-    {
+public function index()
+{
     if (!auth()->check()) {
         return redirect()->route('anasayfa');
     }
 
-    $takimlar = Makifespors::orderBy('puan', 'desc')->get();
-
-    $matches = GameMatch::where('match_date', '>', Carbon::now())
+    $matches = GameMatch::where('match_date', '>', now())
         ->orderBy('match_date', 'asc')
         ->get();
 
-    return view('adminanasayfa', compact('takimlar', 'matches'));
-    }
+    // Her oyun için takımları sıralı çek
+    $cs2Teams = TeamGameStat::with('team')
+        ->where('game', 'cs2')
+        ->orderBy('puan','desc')
+        ->get();
+
+    $lolTeams = TeamGameStat::with('team')
+        ->where('game', 'lol')
+        ->orderBy('puan','desc')
+        ->get();
+
+    $valorantTeams = TeamGameStat::with('team')
+        ->where('game', 'valorant')
+        ->orderBy('puan','desc')
+        ->get();
+
+    return view('adminanasayfa', compact('matches','cs2Teams','lolTeams','valorantTeams'));
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -45,24 +61,36 @@ class TakimController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-  public function store(TakimOlusturRequest $request)
+public function store(TakimOlusturRequest $request)
 {
     if (!auth()->check()) {
         return redirect()->route('anasayfa');
     }
 
-    $data = [
-        'takimadi' => $request->takimadi,
-        'puan' => $request->puan,
-        'gecmis' => $request->gecmis,
-        'oyunlar' => $request->oyunlar,
-    ];
+    $validated = $request->validated();
 
-    Makifespors::create($data);
+    // 1) Takımı kaydet
+    $team = Makifespors::create([
+        'takimadi' => $validated['takimadi'],
+        'oyunlar'  => $validated['oyunlar'], // model cast'inde array -> json otomatik
+        'gecmis'   => '',                    // artık kullanılmıyor ama alan varsa boş ver
+        'puan'     => 0,                     // eski alan varsa 0 bırak
+    ]);
+
+    // 2) Seçilen oyunlar için istatistik satırları oluştur
+    foreach ($validated['oyunlar'] as $game) {
+        TeamGameStat::create([
+            'team_id'     => $team->id,
+            'game'        => $game,      // cs2/lol/valorant
+            'puan'        => 0,
+            'galibiyet'   => 0,
+            'maglubiyet'  => 0,
+        ]);
+    }
 
     return redirect()
-        ->route("takimlar.index")
-        ->with("success", "Takım Başarıyla Eklendi");
+        ->route('takimlar.index')
+        ->with('success', 'Takım başarıyla eklendi.');
 }
 
 
@@ -95,17 +123,36 @@ public function update(TakimGuncelleRequest $request, string $id)
         return redirect()->route('anasayfa');
     }
 
-    $takim = Makifespors::find($id) ?? abort(404, 'Takım Bulunamadı');
+    $takim = Makifespors::findOrFail($id);
 
-    $data = $request->except('_method', '_token');
-    $data['oyunlar'] = $request->oyunlar; // ✅ seçilen oyunları ekle
+    // Takım temel bilgilerini güncelle
+    $takim->update([
+        'takimadi' => $request->takimadi,
+        'oyunlar'  => $request->oyunlar, // array olarak gelir → cast ile json olur
+    ]);
 
-    $takim->update($data);
+    // İstatistikler varsa güncelle
+    if (!empty($request->stats)) {
+        foreach ($request->stats as $statId => $values) {
+            $stat = TeamGameStat::find($statId);
+            if ($stat && $stat->team_id == $takim->id) {
+                $galibiyet = (int)($values['galibiyet'] ?? 0);
+                $maglubiyet = (int)($values['maglubiyet'] ?? 0);
+
+                $stat->update([
+                    'galibiyet' => $galibiyet,
+                    'maglubiyet' => $maglubiyet,
+                    'puan' => $galibiyet * 3,
+                ]);
+            }
+        }
+    }
 
     return redirect()
-        ->route("takimlar.index")
-        ->with("success", "Takım Başarıyla Güncellendi");
+        ->route('takimlar.index')
+        ->with('success', 'Takım başarıyla güncellendi.');
 }
+
 
 
     /**

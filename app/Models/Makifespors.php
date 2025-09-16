@@ -9,7 +9,14 @@ class Makifespors extends Model
 {
     use SoftDeletes;
 
-   protected $fillable = ['takimadi','puan','gecmis','oyunlar'];
-   protected $casts = ['oyunlar' => 'array'];
+    protected $fillable = ['takimadi','puan','gecmis','oyunlar'];
 
+    protected $casts = [
+        'oyunlar' => 'array'
+    ];
+
+    public function gameStats()
+    {
+        return $this->hasMany(\App\Models\TeamGameStat::class, 'team_id');
+    }
 }

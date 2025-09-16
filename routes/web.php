@@ -31,6 +31,8 @@ Route::post('/kayit-gonder', [KayitController::class, 'gonder'])->name('kayit.go
     Route::resource('takimlar', TakimController::class);
 });
 
+
+
 Route::get('/cs2',[Cs2Controller::class, 'yonlendir'])->name('cs2');
 Route::get('/Valorant',[ValorantController::class, 'yonlendir'])->name('Valorant');
 Route::get('/LoL',[LoLController::class, 'yonlendir'])->name('LoL');

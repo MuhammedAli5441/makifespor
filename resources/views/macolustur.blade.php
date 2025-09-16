@@ -69,20 +69,36 @@
 
                             <form action="{{route('maclar.store')}}" method="POST">
                                 @csrf
+
                                 <label>Oyun</label>
-                                <select name="game" id="" class="form-control">
+                                <select name="game" class="form-control">
                                     <option value="valorant">Valorant</option>
                                     <option value="lol">LoL</option>
                                     <option value="cs">CS2</option>
                                 </select>
-                                <label>Takım 1</label>
-                                <input type="text" name="team_home" class="form-control">
-                                <label>Takım 2</label>
-                                <input type="text" name="team_away" class="form-control">
-                                <label>Maç tarihi</label>
+
+                                <label class="mt-2">Takım 1</label>
+                                <select name="team_home" class="form-control">
+                                    <option value="">Seçiniz</option>
+                                    @foreach($takimlar as $takim)
+                                    <option value="{{ $takim->takimadi }}">{{ $takim->takimadi }}</option>
+                                    @endforeach
+                                </select>
+
+                                <label class="mt-2">Takım 2</label>
+                                <select name="team_away" class="form-control">
+                                    <option value="">Seçiniz</option>
+                                    @foreach($takimlar as $takim)
+                                    <option value="{{ $takim->takimadi }}">{{ $takim->takimadi }}</option>
+                                    @endforeach
+                                </select>
+
+                                <label class="mt-2">Maç Tarihi</label>
                                 <input name="match_date" type="datetime-local" class="form-control">
+
                                 <button class="btn btn-success mt-3">Maç Oluştur</button>
                             </form>
+
 
                         </div>
                     </div>

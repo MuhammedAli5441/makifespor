@@ -19,24 +19,23 @@ class TakimOlusturRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
- public function rules(): array
+public function rules(): array
 {
     return [
-        'takimadi' => 'required',
-        'puan' => 'required',
-        'gecmis' => 'required',
-        'oyunlar' => 'required|array|min:1',
+        'takimadi'   => ['required', 'string', 'max:255'],
+        'oyunlar'    => ['required', 'array', 'min:1'],
+        'oyunlar.*'  => ['in:cs2,lol,valorant'], // İsimler cs2/lol/valorant olarak kalacak
     ];
 }
 
 public function messages(): array
 {
     return [
-        'takimadi.required' => 'Lütfen Takım Adı Giriniz',
-        'puan.required' => 'Lütfen Puan Giriniz',
-        'gecmis.required' => 'Lütfen Takım Geçmişi Giriniz',
-        'oyunlar.required' => 'Lütfen oyun seçiniz',
-        'oyunlar.min' => 'Lütfen en az bir oyun seçiniz',
+        'takimadi.required'  => 'Takım adı zorunludur.',
+        'oyunlar.required'   => 'En az bir oyun seçmelisiniz.',
+        'oyunlar.array'      => 'Oyun seçimi hatalı.',
+        'oyunlar.min'        => 'En az bir oyun seçmelisiniz.',
+        'oyunlar.*.in'       => 'Seçilen oyun geçersiz.',
     ];
 }
 

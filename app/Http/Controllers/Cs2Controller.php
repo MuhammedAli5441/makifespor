@@ -10,10 +10,14 @@ class Cs2Controller extends Controller
 {
 public function yonlendir()
 {
-    $takimlar = Makifespors::whereJsonContains('oyunlar', 'CS2')->get();
+    // Takımlar ve oyun istatistikleri birlikte çekiliyor
+    $takimlar = Makifespors::with(['gameStats' => function($q) {
+        $q->where('game', 'cs2');
+    }])->get();
 
-    $matches = GameMatch::where('game', 'cs')
-        ->where('match_date', '>', Carbon::now()) // 🟢 artık Carbon ile
+    // Yaklaşan CS2 maçlarını çek
+    $matches = GameMatch::where('game', 'cs2')
+        ->where('match_date', '>', Carbon::now())
         ->orderBy('match_date', 'asc')
         ->get();
 

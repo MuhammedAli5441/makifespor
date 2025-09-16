@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GameMatch;
+use App\Models\Makifespors;
 use Illuminate\Http\Request;
 
 class MacOlusturController extends Controller
@@ -18,10 +19,12 @@ class MacOlusturController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+   public function create()
     {
-        return view('macolustur');
+    $takimlar = Makifespors::all();
+    return view('macolustur', compact('takimlar'));
     }
+
 
     /**
      * Store a newly created resource in storage.

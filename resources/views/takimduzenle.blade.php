@@ -55,72 +55,89 @@
 
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Anasayfa</h1>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="card-title mb-0">Takım Düzenle</h5>
-                                <a href="{{ route('admin.anasayfa') }}" class="btn btn-danger">Geri Dön</a>
+               <div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0">Takım Düzenle</h5>
+            <a href="{{ route('admin.anasayfa') }}" class="btn btn-danger">Geri Dön</a>
+        </div>
+
+        {{-- Hata mesajları --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $err)
+                        <li>{{ $err }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('takimlar.update', $takim->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            {{-- Takım Adı --}}
+            <div class="mb-3">
+                <label for="takimadi" class="form-label">Takım Adı</label>
+                <input type="text" id="takimadi"
+                       class="form-control @error('takimadi') is-invalid @enderror"
+                       name="takimadi" value="{{ old('takimadi', $takim->takimadi) }}">
+                @error('takimadi')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- Katılınacak Oyunlar --}}
+            <div class="mb-3">
+                <label class="form-label d-block">Katılınacak Oyunlar</label>
+                @php $secili = $takim->oyunlar ?? []; @endphp
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="oyunlar[]" value="cs2" id="game_cs2"
+                        {{ in_array('cs2', $secili) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="game_cs2">CS2</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="oyunlar[]" value="lol" id="game_lol"
+                        {{ in_array('lol', $secili) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="game_lol">League of Legends</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="oyunlar[]" value="valorant" id="game_valorant"
+                        {{ in_array('valorant', $secili) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="game_valorant">Valorant</label>
+                </div>
+            </div>
+
+            {{-- Oyun İstatistikleri --}}
+            <div class="mb-3">
+                <label class="form-label d-block">Oyun İstatistikleri</label>
+                @foreach ($takim->gameStats as $stat)
+                    <div class="border rounded p-2 mb-2">
+                        <strong>{{ strtoupper($stat->game) }}</strong>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <label class="form-label">Galibiyet</label>
+                                <input type="number" min="0" class="form-control"
+                                    name="stats[{{ $stat->id }}][galibiyet]"
+                                    value="{{ old('stats.'.$stat->id.'.galibiyet', $stat->galibiyet) }}">
                             </div>
-                            <form action="{{ route('takimlar.update', $takim->id) }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                {{-- Takım Adı --}}
-                                <label for="">Takım Adı Giriniz:</label>
-                                <input type="text" class="form-control mb-1 @error('takimadi') is-invalid @enderror"
-                                    name="takimadi" value="{{ old('takimadi', $takim->takimadi) }}">
-                                @error('takimadi')
-                                <div class="text-danger mb-3">{{ $message }}</div>
-                                @enderror
-
-                                {{-- Puan --}}
-                                <label for="">Puan Giriniz:</label>
-                                <input type="number" class="form-control mb-1 @error('puan') is-invalid @enderror"
-                                    name="puan" value="{{ old('puan', $takim->puan) }}">
-                                @error('puan')
-                                <div class="text-danger mb-3">{{ $message }}</div>
-                                @enderror
-
-                                {{-- Geçmiş --}}
-                                <label for="">Takım Geçmişi Giriniz:</label>
-                                <input type="text" class="form-control mb-1 @error('gecmis') is-invalid @enderror"
-                                    name="gecmis" value="{{ old('gecmis', $takim->gecmis) }}">
-                                @error('gecmis')
-                                <div class="text-danger mb-3">{{ $message }}</div>
-                                @enderror
-
-                                {{-- Oyunlar --}}
-                                <label class="d-block mb-2">Katılınacak Oyunlar:</label>
-
-                                @php
-                                $seciliOyunlar = $takim->oyunlar ?? [];
-                                @endphp
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="oyunlar[]" value="CS2"
-                                        id="game_cs2" {{ in_array('CS2', $seciliOyunlar) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="game_cs2">CS2</label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="oyunlar[]"
-                                        value="League of Legends" id="game_lol"
-                                        {{ in_array('League of Legends', $seciliOyunlar) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="game_lol">League of Legends</label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="oyunlar[]" value="Valorant"
-                                        id="game_valorant" {{ in_array('Valorant', $seciliOyunlar) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="game_valorant">Valorant</label>
-                                </div>
-                                @error('oyunlar')
-                                <div class="text-danger mt-2">{{ $message }}</div>
-                                @enderror
-
-                                <button class="btn btn-primary mt-3">Takımı Düzenle</button>
-                            </form>
+                            <div class="col">
+                                <label class="form-label">Mağlubiyet</label>
+                                <input type="number" min="0" class="form-control"
+                                    name="stats[{{ $stat->id }}][maglubiyet]"
+                                    value="{{ old('stats.'.$stat->id.'.maglubiyet', $stat->maglubiyet) }}">
+                            </div>
                         </div>
                     </div>
+                @endforeach
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Takımı Güncelle</button>
+        </form>
+    </div>
+</div>
+
                 </div>
 
             </main>

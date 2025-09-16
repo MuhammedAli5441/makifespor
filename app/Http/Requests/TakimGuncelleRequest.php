@@ -19,25 +19,24 @@ class TakimGuncelleRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+public function rules(): array
 {
     return [
-        'takimadi' => 'required',
-        'puan' => 'required|integer',
-        'gecmis' => 'required',
-        'oyunlar' => 'required|array|min:1',
-        'oyunlar.*' => 'string|max:50',
+        'takimadi'   => 'required|string|max:255',
+        'oyunlar'    => 'required|array|min:1',
+        'oyunlar.*'  => 'in:cs2,lol,valorant',
+        'stats'      => 'nullable|array',
     ];
 }
 
 public function messages(): array
 {
     return [
-        'takimadi.required' => 'Lütfen Takım Adı Giriniz',
-        'puan.required' => 'Lütfen Puan Giriniz',
-        'gecmis.required' => 'Lütfen Takım Geçmişi Giriniz',
-        'oyunlar.required' => 'Lütfen oyun seçiniz',
-        'oyunlar.min' => 'Lütfen en az bir oyun seçiniz',
+        'takimadi.required'  => 'Lütfen takım adı giriniz.',
+        'oyunlar.required'   => 'Lütfen en az bir oyun seçiniz.',
+        'oyunlar.array'      => 'Oyun seçimi hatalı.',
+        'oyunlar.min'        => 'Lütfen en az bir oyun seçiniz.',
+        'oyunlar.*.in'       => 'Seçilen oyun geçersiz.',
     ];
 }
 

@@ -12,18 +12,32 @@ class LoLController extends Controller
 {
 public function yonlendir()
 {
-    // LoL takımlarını çek (sadece lol istatistikleri)
+    $now = Carbon::now();
+
+    // 📌 LoL takımlarını puana göre sırala
     $lolTeams = TeamGameStat::with('team')
         ->where('game', 'lol')
         ->orderBy('puan', 'desc')
         ->get();
 
-    // Yaklaşan LoL maçları
-    $matches = GameMatch::where('game', 'lol')
-        ->where('match_date', '>', Carbon::now())
+    // 📌 Yaklaşan (planlı) LoL maçları
+    $upcomingMatches = GameMatch::where('game', 'lol')
+        ->where('status', 'planned')
+        ->where('match_date', '>', $now)
         ->orderBy('match_date', 'asc')
         ->get();
 
-    return view('loltablosu', compact('lolTeams', 'matches'));
+    // 📌 Bitmiş LoL maçları
+    $finishedMatches = GameMatch::where('game', 'lol')
+        ->where('status', 'finished')
+        ->orderBy('match_date', 'desc')
+        ->get();
+
+    return view('loltablosu', compact(
+        'lolTeams',
+        'upcomingMatches',
+        'finishedMatches'
+    ));
 }
+
 }

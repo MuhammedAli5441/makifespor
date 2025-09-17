@@ -8,12 +8,22 @@ use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-   public function index()
+public function index()
 {
-    $matches = GameMatch::where('match_date', '>', Carbon::now())
+    $now = Carbon::now();
+
+    // Gelecek (planlı) maçlar
+    $matches = GameMatch::where('match_date', '>', $now)
         ->orderBy('match_date', 'asc')
         ->get();
 
-    return view('anasayfa', compact('matches'));
+    // Bitmiş (geçmiş) maçlar
+    $finishedMatches = GameMatch::where('match_date', '<=', $now)
+        ->where('status', 'finished')
+        ->orderBy('match_date', 'desc')
+        ->get();
+
+    return view('anasayfa', compact('matches', 'finishedMatches'));
 }
+
 }

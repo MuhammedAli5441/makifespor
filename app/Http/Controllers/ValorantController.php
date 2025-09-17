@@ -11,19 +11,32 @@ class ValorantController extends Controller
 {
 public function yonlendir()
 {
-    // Valorant takımlarının istatistiklerini çek
+    $now = Carbon::now();
+
+    // 📌 Valorant takımlarını puana göre sırala
     $valorantTeams = TeamGameStat::with('team')
         ->where('game', 'valorant')
         ->orderBy('puan', 'desc')
         ->get();
 
-    // Gelecek maçları çek
-    $matches = GameMatch::where('game', 'valorant')
-        ->where('match_date', '>', Carbon::now())
+    // 📌 Yaklaşan (planlı) Valorant maçları
+    $upcomingMatches = GameMatch::where('game', 'valorant')
+        ->where('status', 'planned')
+        ->where('match_date', '>', $now)
         ->orderBy('match_date', 'asc')
         ->get();
 
-    return view('valoranttablosu', compact('valorantTeams', 'matches'));
+    // 📌 Bitmiş Valorant maçları
+    $finishedMatches = GameMatch::where('game', 'valorant')
+        ->where('status', 'finished')
+        ->orderBy('match_date', 'desc')
+        ->get();
+
+    return view('valoranttablosu', compact(
+        'valorantTeams',
+        'upcomingMatches',
+        'finishedMatches'
+    ));
 }
 
 

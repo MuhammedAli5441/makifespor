@@ -41,4 +41,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('maclar', MacOlusturController::class);
 });
 
+Route::post('maclar/{id}/finish', [MacOlusturController::class, 'finish'])->name('maclar.finish');
+
 

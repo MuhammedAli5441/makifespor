@@ -21,28 +21,57 @@ public function index()
         return redirect()->route('anasayfa');
     }
 
-    $matches = GameMatch::where('match_date', '>', now())
+    $now = now();
+
+    // 🕒 Zamanı geçen planlı maçları otomatik finished yap
+    GameMatch::where('status', 'planned')
+        ->where('match_date', '<', $now)
+        ->update(['status' => 'finished']);
+
+    // 📌 Gelecek maçlar (hala planned olanlar)
+    $upcomingMatches = GameMatch::where('status', 'planned')
         ->orderBy('match_date', 'asc')
         ->get();
 
-    // Her oyun için takımları sıralı çek
+    // 📌 Bitmiş maçlar (finished olanlar)
+    $finishedMatches = GameMatch::where('status', 'finished')
+        ->orderBy('match_date', 'desc')
+        ->get();
+
+    // 📌 Takımlar
     $cs2Teams = TeamGameStat::with('team')
         ->where('game', 'cs2')
-        ->orderBy('puan','desc')
+        ->orderByDesc('puan')
         ->get();
 
     $lolTeams = TeamGameStat::with('team')
         ->where('game', 'lol')
-        ->orderBy('puan','desc')
+        ->orderByDesc('puan')
         ->get();
 
     $valorantTeams = TeamGameStat::with('team')
         ->where('game', 'valorant')
-        ->orderBy('puan','desc')
+        ->orderByDesc('puan')
         ->get();
 
-    return view('adminanasayfa', compact('matches','cs2Teams','lolTeams','valorantTeams'));
+    // 📌 Tüm takımlar (select için)
+    $takimlar = Makifespors::select('takimadi')->orderBy('takimadi')->get();
+
+    return view('adminanasayfa', compact(
+        'upcomingMatches',
+        'finishedMatches',
+        'cs2Teams',
+        'lolTeams',
+        'valorantTeams',
+        'takimlar'
+    ));
 }
+
+
+
+
+
+
 
 
     /**

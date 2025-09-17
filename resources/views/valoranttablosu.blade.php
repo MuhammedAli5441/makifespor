@@ -10,12 +10,8 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
     <style>
-        .top4 td:first-child {
-            border-left: 6px solid #0d6efd;
-        }
-        .mid12 td:first-child {
-            border-left: 6px solid #fd7e14;
-        }
+        .top4 td:first-child { border-left: 6px solid #0d6efd; }
+        .mid12 td:first-child { border-left: 6px solid #fd7e14; }
         .nav-link.active {
             color: #fff !important;
             background-color: #0d6efd !important;
@@ -25,6 +21,7 @@
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
         }
+        .card { border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
     </style>
 </head>
 
@@ -64,30 +61,31 @@
         </div>
     </div>
 
-    <!-- SAYFA İÇERİĞİ -->
     <main class="container-fluid px-3 px-md-4 mt-5">
         @if(session('success'))
             <div class="alert alert-success mt-3">{{ session('success') }}</div>
         @endif
+        @if(session('error'))
+            <div class="alert alert-danger mt-3">{{ session('error') }}</div>
+        @endif
 
         <h1 class="mt-4 mb-3 text-center text-md-start">Valorant</h1>
 
-        <!-- Sıradaki Maçlar -->
+        <!-- Yaklaşan Valorant Maçları -->
         <div class="card mb-4 shadow-sm">
             <div class="card-header bg-info text-white">
-                <i class="fas fa-clock me-1"></i> Sıradaki Valorant Maçları
+                <i class="fas fa-clock me-1"></i> Yaklaşan Valorant Maçları
             </div>
             <div class="card-body overflow-auto">
                 <div class="d-flex flex-row flex-wrap gap-3">
-                    @forelse($matches as $match)
+                    @forelse($upcomingMatches as $match)
                         <div class="card flex-fill" style="min-width: 250px;">
-                            <div class="card-body">
-                                <h5 class="card-title">
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-2">
                                     {{ $match->team_home }} vs {{ $match->team_away }}
                                 </h5>
-                                <p class="card-text">
-                                    Tarih: {{ $match->match_date->format('d/m/Y') }} -
-                                    Saat: {{ $match->match_date->format('H:i') }}
+                                <p class="card-text text-muted mb-0">
+                                    {{ $match->match_date->format('d/m/Y H:i') }}
                                 </p>
                             </div>
                         </div>
@@ -100,9 +98,50 @@
             </div>
         </div>
 
+        <!-- Geçmiş Valorant Maçları -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <i class="fa-solid fa-clock-rotate-left me-1"></i> Geçmiş Maçlar
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-striped text-center align-middle">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Ev Sahibi</th>
+                            <th>Skor</th>
+                            <th>Deplasman</th>
+                            <th>Kazanan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($finishedMatches as $match)
+                            <tr>
+                                <td>{{ $match->match_date->format('d/m/Y') }}</td>
+                                <td>{{ $match->team_home }}</td>
+                                <td>{{ $match->home_score }} - {{ $match->away_score }}</td>
+                                <td>{{ $match->team_away }}</td>
+                                <td>
+                                    @if($match->winner)
+                                        <span class="badge bg-success">{{ $match->winner }}</span>
+                                    @else
+                                        <span class="badge bg-secondary">Belirsiz</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-muted">Henüz oynanmış maç yok.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- Valorant Takımları Tablosu -->
         <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-dark text-white">
+            <div class="card-header bg-danger text-white">
                 <i class="fa-solid fa-bullseye me-1"></i> Valorant Takımları
             </div>
             <div class="card-body table-responsive">
@@ -116,7 +155,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($valorantTeams as $index => $stat)
+                        @forelse ($valorantTeams as $index => $stat)
                             @php
                                 $rowClass = $index < 4 ? 'top4' : ($index < 12 ? 'mid12' : '');
                             @endphp
@@ -126,7 +165,11 @@
                                 <td>{{ $stat->puan }}</td>
                                 <td>{{ $stat->galibiyet }}✅ {{ $stat->maglubiyet }}❌</td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-muted">Valorant takımı yok.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

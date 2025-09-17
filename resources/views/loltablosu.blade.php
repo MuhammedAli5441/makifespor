@@ -10,7 +10,6 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
     <style>
-        /* Sıralamaya göre renk çizgileri */
         tbody tr.top4 td:first-child::before,
         tbody tr.mid12 td:first-child::before {
             content: "";
@@ -76,18 +75,18 @@
     <!-- SAYFA İÇERİĞİ -->
     <main class="container-fluid px-3 px-md-4 mt-5">
 
-        <h1 class="mt-4 mb-3 text-center text-md-start">LoL Takımları</h1>
+        <h1 class="mt-4 mb-3 text-center text-md-start">LoL</h1>
 
-        <!-- Sıradaki Maçlar -->
+        <!-- 📌 Sıradaki Maçlar -->
         <div class="card mb-4 shadow-sm">
             <div class="card-header bg-info text-white">
                 <i class="fas fa-clock me-1"></i> Sıradaki League of Legends Maçları
             </div>
             <div class="card-body overflow-auto">
                 <div class="d-flex flex-row flex-wrap gap-3">
-                    @forelse($matches as $match)
+                    @forelse($upcomingMatches as $match)
                         <div class="card flex-fill" style="min-width: 250px;">
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <h5 class="card-title">
                                     {{ $match->team_home }} vs {{ $match->team_away }}
                                 </h5>
@@ -106,10 +105,51 @@
             </div>
         </div>
 
-        <!-- LoL Takımları Tablosu -->
+        <!-- 📌 Geçmiş Maçlar -->
         <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                <span><i class="fa-solid fa-dragon me-1"></i> LoL Takımları</span>
+            <div class="card-header bg-secondary text-white">
+                <i class="fa-solid fa-clock-rotate-left me-1"></i> Geçmiş Maçlar
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-striped text-center align-middle">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Ev Sahibi</th>
+                            <th>Skor</th>
+                            <th>Deplasman</th>
+                            <th>Kazanan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($finishedMatches as $match)
+                            <tr>
+                                <td>{{ $match->match_date->format('d/m/Y') }}</td>
+                                <td>{{ $match->team_home }}</td>
+                                <td>{{ $match->home_score }} - {{ $match->away_score }}</td>
+                                <td>{{ $match->team_away }}</td>
+                                <td>
+                                    @if($match->winner)
+                                        <span class="badge bg-success">{{ $match->winner }}</span>
+                                    @else
+                                        <span class="badge bg-secondary">Belirsiz</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-muted">Henüz oynanmış maç yok.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 📌 LoL Takımları Tablosu -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <i class="fa-solid fa-dragon me-1"></i> LoL Takımları
             </div>
             <div class="card-body table-responsive">
                 <table class="table table-striped text-center align-middle">

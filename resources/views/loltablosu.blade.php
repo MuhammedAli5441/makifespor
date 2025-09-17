@@ -44,7 +44,7 @@
             <button class="btn btn-dark me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu">
                 <i class="fas fa-bars"></i>
             </button>
-            <a class="navbar-brand" href="{{ route('anasayfa') }}">Espor</a>
+            <a class="navbar-brand" href="{{ route('anasayfa') }}">🎮 Espor</a>
         </div>
     </nav>
 

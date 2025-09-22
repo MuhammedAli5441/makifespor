@@ -169,32 +169,6 @@
                   data-bs-target="#editFinished{{ $match->id }}">Düzenle</button>
               </td>
             </tr>
-            <!-- ✏️ Bitmiş Maç Modal -->
-            <div class="modal fade" id="editFinished{{ $match->id }}" tabindex="-1" aria-hidden="true">
-              <div class="modal-dialog">
-                <form class="modal-content" method="POST" action="{{ route('maclar.update', $match->id) }}">
-                  @csrf @method('PUT')
-                  <div class="modal-header">
-                    <h5 class="modal-title">Skor Güncelle</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                  </div>
-                  <div class="modal-body text-start">
-                    <div class="mb-3">
-                      <label class="form-label">{{ $match->team_home }} Skor</label>
-                      <input type="number" name="home_score" class="form-control" value="{{ $match->home_score }}" min="0">
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label">{{ $match->team_away }} Skor</label>
-                      <input type="number" name="away_score" class="form-control" value="{{ $match->away_score }}" min="0">
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Kapat</button>
-                    <button class="btn btn-success" type="submit">Kaydet</button>
-                  </div>
-                </form>
-              </div>
-            </div>
             @empty
             <tr><td colspan="6" class="text-muted">Henüz bitmiş {{ $gameLabel }} maçı yok.</td></tr>
             @endforelse
@@ -202,6 +176,35 @@
         </table>
       </div>
     </div>
+
+    <!-- 📌 Bitmiş Maç Modalları (TABLO DIŞINA ALINDI) -->
+    @foreach($finishedMatches->where('game',$gameKey) as $match)
+    <div class="modal fade" id="editFinished{{ $match->id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" method="POST" action="{{ route('maclar.update', $match->id) }}">
+          @csrf @method('PUT')
+          <div class="modal-header">
+            <h5 class="modal-title">Skor Güncelle</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body text-start">
+            <div class="mb-3">
+              <label class="form-label">{{ $match->team_home }} Skor</label>
+              <input type="number" name="home_score" class="form-control" value="{{ $match->home_score }}" min="0">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{ $match->team_away }} Skor</label>
+              <input type="number" name="away_score" class="form-control" value="{{ $match->away_score }}" min="0">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Kapat</button>
+            <button class="btn btn-success" type="submit">Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    @endforeach
     @endforeach
 
     <!-- 📌 Takım Tabloları -->

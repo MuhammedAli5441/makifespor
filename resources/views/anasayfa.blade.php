@@ -12,6 +12,10 @@
     .nav-link:hover { background-color:rgba(255,255,255,0.15); border-radius:6px; }
     .card { border-radius:10px; box-shadow:0 3px 8px rgba(0,0,0,0.1); }
     .card-header { font-weight:600; }
+       .scrollable {
+        height: 250px;
+        overflow: scroll;
+    }
   </style>
 </head>
 
@@ -86,7 +90,7 @@
       <div class="card-header bg-secondary text-white">
         <i class="fas fa-flag-checkered me-1"></i> Bitmiş {{ $gameLabel }} Maçları
       </div>
-      <div class="card-body table-responsive">
+      <div class="card-body table-responsive scrollable">
         <table class="table table-striped text-center align-middle">
           <thead class="table-secondary">
             <tr>

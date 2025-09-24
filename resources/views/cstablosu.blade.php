@@ -23,6 +23,10 @@
         }
         .card { border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
         thead.table-secondary th { font-weight: 600; }
+           .scrollable {
+        height: 250px;
+        overflow: scroll;
+    }
     </style>
 </head>
 
@@ -105,7 +109,7 @@
             <div class="card-header bg-secondary text-white">
                 <i class="fa-solid fa-clock-rotate-left me-1"></i> Geçmiş Maçlar
             </div>
-            <div class="card-body table-responsive">
+            <div class="card-body table-responsive scrollable">
                 <table class="table table-striped text-center align-middle">
                     <thead class="table-secondary">
                         <tr>
@@ -146,7 +150,7 @@
             <div class="card-header bg-dark text-white">
                 <i class="fa-solid fa-crosshairs me-1"></i> CS2 Takımları
             </div>
-            <div class="card-body table-responsive">
+            <div class="card-body table-responsive scrollable">
                 <table class="table table-striped text-center align-middle">
                     <thead class="table-secondary">
                         <tr>

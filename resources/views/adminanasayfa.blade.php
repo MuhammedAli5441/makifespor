@@ -27,6 +27,10 @@
       width: 6px; border-radius: 4px 0 0 4px; background-color: #fd7e14;
     }
     .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .scrollable {
+        height: 250px;
+        overflow: scroll;
+    }
   </style>
 </head>
 <body class="sb-nav-fixed">
@@ -151,7 +155,7 @@
       <div class="card-header bg-secondary text-white">
         <i class="fas fa-flag-checkered me-1"></i> Bitmiş {{ $gameLabel }} Maçları
       </div>
-      <div class="card-body table-responsive">
+      <div class="card-body table-responsive scrollable">
         <table class="table table-striped text-center align-middle">
           <thead class="table-secondary">
             <tr><th>Tarih</th><th>Ev Sahibi</th><th>Skor</th><th>Deplasman</th><th>Kazanan</th><th>İşlem</th></tr>
@@ -213,8 +217,8 @@
         <span><i class="fa-solid fa-crosshairs me-1"></i> CS2 Takımları</span>
         <a href="{{route('takimlar.create')}}" class="btn btn-light btn-sm">+ Takım Ekle</a>
       </div>
-      <div class="card-body table-responsive">
-        <table class="table table-striped text-center align-middle">
+      <div class="card-body table-responsive scrollable">
+        <table class="table table-striped text-center align-middle table-scrollable">
           <thead><tr><th>#</th><th>Takım Adı</th><th>Puan</th><th>Geçmiş</th><th>İşlemler</th></tr></thead>
           <tbody>
             @foreach ($cs2Teams as $index => $stat)
@@ -237,7 +241,7 @@
         <span><i class="fa-solid fa-dragon me-1"></i> League of Legends Takımları</span>
         <a href="{{route('takimlar.create')}}" class="btn btn-light btn-sm">+ Takım Ekle</a>
       </div>
-      <div class="card-body table-responsive">
+      <div class="card-body table-responsive scrollable">
         <table class="table table-striped text-center align-middle">
           <thead><tr><th>#</th><th>Takım Adı</th><th>Puan</th><th>Geçmiş</th><th>İşlemler</th></tr></thead>
           <tbody>
@@ -261,7 +265,7 @@
         <span><i class="fa-solid fa-bullseye me-1"></i> Valorant Takımları</span>
         <a href="{{route('takimlar.create')}}" class="btn btn-light btn-sm">+ Takım Ekle</a>
       </div>
-      <div class="card-body table-responsive">
+      <div class="card-body table-responsive scrollable">
         <table class="table table-striped text-center align-middle">
           <thead><tr><th>#</th><th>Takım Adı</th><th>Puan</th><th>Geçmiş</th><th>İşlemler</th></tr></thead>
           <tbody>

@@ -33,6 +33,10 @@
             background-color: rgba(255,255,255,0.1);
             border-radius: 5px;
         }
+           .scrollable {
+        height: 250px;
+        overflow: scroll;
+    }
     </style>
 </head>
 
@@ -110,7 +114,7 @@
             <div class="card-header bg-secondary text-white">
                 <i class="fa-solid fa-clock-rotate-left me-1"></i> Geçmiş Maçlar
             </div>
-            <div class="card-body table-responsive">
+            <div class="card-body table-responsive scrollable">
                 <table class="table table-striped text-center align-middle">
                     <thead class="table-secondary">
                         <tr>
@@ -151,7 +155,7 @@
             <div class="card-header bg-dark text-white">
                 <i class="fa-solid fa-dragon me-1"></i> LoL Takımları
             </div>
-            <div class="card-body table-responsive">
+            <div class="card-body table-responsive scrollable">
                 <table class="table table-striped text-center align-middle">
                     <thead class="table-secondary">
                         <tr>
